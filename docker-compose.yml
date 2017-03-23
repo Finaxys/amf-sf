@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  jenkins:
+    image: jenkins:2.32.3-alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - /amf-sf/jenkins:/var/jenkins_home
+    links:
+      - sonar:sonar
+      - nexus:nexus
+    networks:
+      - amf
+
+  sonar:
+    image: sonarqube:6.3-alpine
+    networks:
+      - amf
+
+  nexus:
+    image: sonatype/nexus3:3.2.1
+    networks:
+      - amf
+
+networks:
+  amf:
+    driver: overlay
