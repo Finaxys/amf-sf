@@ -76,6 +76,7 @@ services:
           - node.role == manager
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    command: --swarm
     ports:
       - "8002:9000"
     networks:
