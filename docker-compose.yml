@@ -70,9 +70,10 @@ services:
 # Administation
   portainer:
     image: portainer/portainer:1.12.1
-    placement:
-      constraints:
-        - node.role == manager
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
