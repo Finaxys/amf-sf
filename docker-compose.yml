@@ -1,28 +1,83 @@
 version: '3.1'
 
 services:
+# Continuous integration
   jenkins:
     image: jenkins:2.32.3-alpine
     ports:
       - "8080:8080"
     volumes:
-      - /amf-sf/jenkins:/var/jenkins_home
+      - jenkins_home:/var/jenkins_home
     links:
-      - sonar:sonar
+      - sonarqube:sonarqube
       - nexus:nexus
     networks:
       - amf
 
-  sonar:
+# Code quality
+  sonarqube:
     image: sonarqube:6.3-alpine
+    ports:
+      - "9000:9000"
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://postgres:5432/sonarqube
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    links:
+      - postgres:postgres
+    depends_on:
+      - postgres
     networks:
       - amf
 
+# Database for Sonarqube
+  postgres:
+    image: postgres:9.6.2-alpine
+    environment:
+      - POSTGRES_USER=sonarqube
+      - POSTGRES_PASSWORD=sonarqube
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - amf
+
+# Artifact storage
   nexus:
     image: sonatype/nexus3:3.2.1
+    ports:
+      - "8081:8081"
     networks:
+      - amf
+
+# Object storage
+  minio:
+    image: minio/minio:RELEASE.2017-03-16T21-50-32Z
+    mode: global
+    network:
+      - amf
+      - minio
+
+# Administation
+  portainer:
+    image: portainer/portainer:1.12.1
+    network:
       - amf
 
 networks:
   amf:
     driver: overlay
+  minio:
+    driver: overlay
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  postgresql:
+  postgresql_data:
+  jenkins_home:
