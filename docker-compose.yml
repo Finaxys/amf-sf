@@ -58,7 +58,10 @@ services:
 # Object storage
   minio:
     image: minio/minio:RELEASE.2017-03-16T21-50-32Z
+    ports:
+      - "8001:9000"
     mode: global
+    command: server /export
     network:
       - amf
       - minio
@@ -66,6 +69,8 @@ services:
 # Administation
   portainer:
     image: portainer/portainer:1.12.1
+    ports:
+      - "8002:9000"
     network:
       - amf
 
