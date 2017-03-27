@@ -58,10 +58,13 @@ services:
 # Object storage
   minio:
     image: minio/minio:RELEASE.2017-03-16T21-50-32Z
+    environment:
+      - MINIO_ACCESS_KEY=B3ON3UQ857SRQXA4642G
+      - MINIO_SECRET_KEY=rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
     ports:
       - "8001:9000"
-    deploy:
-      mode: global
+#    deploy:
+#      mode: global
     command: server /export
     networks:
       - amf
@@ -76,7 +79,7 @@ services:
           - node.role == manager
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-    command: --swarm
+    command: -H unix:///var/run/docker.sock
     ports:
       - "8002:9000"
     networks:
@@ -96,3 +99,9 @@ volumes:
   postgresql:
   postgresql_data:
   jenkins_home:
+    driver: minio/minfs
+    driver_opts:
+      endpoint: http://minio:8001
+      access-key: B3ON3UQ857SRQXA4642G
+      secret-key: rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
+      bucket: jenkins_home
