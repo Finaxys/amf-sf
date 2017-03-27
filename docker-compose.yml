@@ -63,6 +63,8 @@ services:
 #    deploy:
 #      mode: global
     command: server /export
+    volume:
+      - minio:/export
     networks:
       - amf
       - minio
@@ -95,6 +97,7 @@ volumes:
   sonarqube_bundled-plugins:
   postgresql:
   postgresql_data:
+  minio:
   jenkins_home:
     driver: minio/minfs
     driver_opts:
