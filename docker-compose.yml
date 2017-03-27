@@ -8,9 +8,6 @@ services:
       - "8080:8080"
     volumes:
       - jenkins_home:/var/jenkins_home
-    links:
-      - sonarqube:sonarqube
-      - nexus:nexus
     networks:
       - amf
 
@@ -104,4 +101,4 @@ volumes:
       endpoint: http://minio:8001
       access-key: B3ON3UQ857SRQXA4642G
       secret-key: rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
-      bucket: jenkins_home
+      bucket: jenkins.home
