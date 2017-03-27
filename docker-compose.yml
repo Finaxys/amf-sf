@@ -63,7 +63,7 @@ services:
 #    deploy:
 #      mode: global
     command: server /export
-    volume:
+    volumes:
       - minio:/export
     networks:
       - amf
