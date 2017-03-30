@@ -5,7 +5,7 @@ services:
   jenkins:
     image: jenkins:2.32.3-alpine
     ports:
-      - "8080:8080"
+      - "8001:8080"
     volumes:
       - /amf/jenkins/jenkins_home:/var/jenkins_home
     networks:
@@ -15,7 +15,7 @@ services:
   sonarqube:
     image: sonarqube:6.3-alpine
     ports:
-      - "9000:9000"
+      - "8002:9000"
     environment:
       - SONARQUBE_JDBC_USERNAME=sonarqube
       - SONARQUBE_JDBC_PASSWORD=sonarqube
@@ -25,6 +25,7 @@ services:
       - /amf/sonarqube/sonarqube_data:/opt/sonarqube/data
       - /amf/sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
       - /amf/sonarqube/sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+      - /amf/sonarqube/sonarqube_temp:/opt/sonarqube/temp
     depends_on:
       - postgres
     networks:
@@ -46,27 +47,9 @@ services:
   nexus:
     image: sonatype/nexus3:3.2.1
     ports:
-      - "8081:8081"
+      - "8003:8081"
     networks:
       - amf
-
-# Object storage
-#  minio:
-#    image: minio/minio:RELEASE.2017-03-16T21-50-32Z
-#    environment:
-#      - MINIO_ACCESS_KEY=B3ON3UQ857SRQXA4642G
-#      - MINIO_SECRET_KEY=rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
-#    ports:
-#      - "8001:9000"
-##    deploy:
-##      mode: global
-#    command: server /export
-#    volumes:
-#      - minio:/export
-#    networks:
-#      - amf
-#      - minio
-
 # Administation
   portainer:
     image: portainer/portainer:1.12.1
@@ -78,28 +61,10 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command: -H unix:///var/run/docker.sock
     ports:
-      - "8002:9000"
+      - "8000:9000"
     networks:
       - amf
 
 networks:
   amf:
     driver: overlay
-  minio:
-    driver: overlay
-
-#volumes:
-#  sonarqube_conf:
-#  sonarqube_data:
-#  sonarqube_extensions:
-#  sonarqube_bundled-plugins:
-#  postgresql:
-#  postgresql_data:
-#  minio:
-#  jenkins_home:
-#    driver: minio/minfs
-#    driver_opts:
-#      endpoint: http://minio:8001
-#      access-key: B3ON3UQ857SRQXA4642G
-#      secret-key: rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
-#      bucket: jenkins.home
