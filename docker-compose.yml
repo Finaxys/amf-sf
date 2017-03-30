@@ -37,8 +37,8 @@ services:
       - POSTGRES_USER=sonarqube
       - POSTGRES_PASSWORD=sonarqube
     volumes:
-      - /amf/sonarqube/postgresql:/var/lib/postgresql
-      - /amf/sonarqube/postgresql_data:/var/lib/postgresql/data
+      - /amf/postgres/postgresql:/var/lib/postgresql
+      - /amf/postgres/postgresql_data:/var/lib/postgresql/data
     networks:
       - amf
 
