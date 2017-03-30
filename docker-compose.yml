@@ -51,21 +51,21 @@ services:
       - amf
 
 # Object storage
-  minio:
-    image: minio/minio:RELEASE.2017-03-16T21-50-32Z
-    environment:
-      - MINIO_ACCESS_KEY=B3ON3UQ857SRQXA4642G
-      - MINIO_SECRET_KEY=rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
-    ports:
-      - "8001:9000"
-#    deploy:
-#      mode: global
-    command: server /export
-    volumes:
-      - minio:/export
-    networks:
-      - amf
-      - minio
+#  minio:
+#    image: minio/minio:RELEASE.2017-03-16T21-50-32Z
+#    environment:
+#      - MINIO_ACCESS_KEY=B3ON3UQ857SRQXA4642G
+#      - MINIO_SECRET_KEY=rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
+#    ports:
+#      - "8001:9000"
+##    deploy:
+##      mode: global
+#    command: server /export
+#    volumes:
+#      - minio:/export
+#    networks:
+#      - amf
+#      - minio
 
 # Administation
   portainer:
@@ -88,18 +88,18 @@ networks:
   minio:
     driver: overlay
 
-volumes:
-  sonarqube_conf:
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_bundled-plugins:
-  postgresql:
-  postgresql_data:
-  minio:
-  jenkins_home:
-    driver: minio/minfs
-    driver_opts:
-      endpoint: http://minio:8001
-      access-key: B3ON3UQ857SRQXA4642G
-      secret-key: rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
-      bucket: jenkins.home
+#volumes:
+#  sonarqube_conf:
+#  sonarqube_data:
+#  sonarqube_extensions:
+#  sonarqube_bundled-plugins:
+#  postgresql:
+#  postgresql_data:
+#  minio:
+#  jenkins_home:
+#    driver: minio/minfs
+#    driver_opts:
+#      endpoint: http://minio:8001
+#      access-key: B3ON3UQ857SRQXA4642G
+#      secret-key: rdh+tfteSlsCRu7Rd00FgHVcnifILbZam1KYY3TG
+#      bucket: jenkins.home
